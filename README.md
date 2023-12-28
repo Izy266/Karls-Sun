@@ -43,7 +43,7 @@ Install dependencies:
 
 Contributions:
 
-Contributions, bug reports, and feature requests are welcome! Feel free to submit pull requests or open issues to help improve KarlPy.
+Contributions, bug reports, and feature requests are welcome! Feel free to submit pull requests or open issues to help improve Karl's Sun.
 License:
 
 This project is licensed under the MIT License - see the LICENSE file for details.
