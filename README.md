@@ -22,12 +22,10 @@ Features:
 
 Getting Started:
 
-    Clone the repository:
+Clone the repository:
 
-    bash
-
-git clone https://github.com/yourusername/karlpy-chess-engine.git
-cd karlpy-chess-engine
+    git clone https://github.com/yourusername/karlpy-chess-engine.git
+    cd karlpy-chess-engine
 
 Install dependencies:
 
