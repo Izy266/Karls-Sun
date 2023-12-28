@@ -17,7 +17,7 @@ counter_move_table = defaultdict(list)
 killer_table = defaultdict(list)
 guess = (0,None)
 pvals = [88, 309, 331, 495, 981, 10000, 0]
-egtb = chess.syzygy.open_tablebase("D:\\Users\\Islam\\Documents\\CS\\karlpy\\syzygy") # endgame tablebase <= 5 pieces
+egtb = chess.syzygy.open_tablebase("D:\\Users\\Islam\\Documents\\CS\\karlpy\\syzygy 3-4") # endgame tablebase <= 5 pieces
 
 def hash(gs):
     h = 0
@@ -648,7 +648,7 @@ def get_move(args):
             trans_table[-1] = 1
             return 1
 
-    if material_left(gs) <= 5:
+    if material_left(gs) <= 4:
         no_cap = 1 in [material_left(gs, 0), material_left(gs, 1)]
         wdls, dtzs = [], []
         valid_moves = get_valid_moves(gs)
