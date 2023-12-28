@@ -25,17 +25,10 @@ Getting Started:
 Clone the repository:
 
     git clone https://github.com/yourusername/karlpy-chess-engine.git
-    cd karlpy-chess-engine
 
 Install dependencies:
 
-pip install -r requirements.txt
-
-Run the engine:
-
-    python main.py
-
-    Connect to the engine using a UCI-compatible chess interface or application.
+    pip install -r requirements.txt
 
 Contributions:
 
