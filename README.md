@@ -5,7 +5,7 @@ Karl's Sun is a multi-threaded Python-based chess engine designed for playing ch
 ## Features:
 
 ### General:
-* UCI Protocol Support: KarlPy follows the Universal Chess Interface (UCI) protocol, allowing seamless integration with various chess interfaces and applications.
+* UCI Protocol Support: Karl's Sun follows the Universal Chess Interface (UCI) protocol, allowing seamless integration with various chess interfaces and applications.
 
 ### Evaluation:
 * **Opening Book**: Karl's Sun utilizes the komodo.bin opening book, an opening book used by the Komodo chess engine, created by the opening book expert Erdogan Gunes
@@ -36,10 +36,6 @@ Karl's Sun is a multi-threaded Python-based chess engine designed for playing ch
 * **Late Move Reduction**: Late Move Reduction is employed to dynamically adjust the search depth for moves occurring later in the move list, with the odds of those moves improving the position being slim due to quality move ordering.
   
 Getting Started:
-
-Clone the repository:
-
-    git clone https://github.com/yourusername/karlpy-chess-engine.git
 
 Install dependencies:
 
