@@ -4,9 +4,11 @@ Karl Chess is a multi-threaded Python-based chess engine designed for playing ch
 
 ## Features:
 
+### General:
+* UCI Protocol Support: KarlPy follows the Universal Chess Interface (UCI) protocol, allowing seamless integration with various chess interfaces and applications.
+
 ### Pruning:
 
-* UCI Protocol Support: KarlPy follows the Universal Chess Interface (UCI) protocol, allowing seamless integration with various chess interfaces and applications.
 
 * Syzygy Endgame Tablebases: The engine incorporates Syzygy endgame tablebases for positions with up to 4 pieces, enabling precise endgame play.
 
