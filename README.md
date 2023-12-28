@@ -1,4 +1,4 @@
-# Karl's Sun (~ 2500 Elo)
+# Karl's Sun (~ 2600 Elo)
 
 Karl's Sun is a multi-threaded Python-based chess engine designed for playing chess games, analyzing positions, and providing a challenging opponent for players. The engine utilizes a combination of classic chess algorithms, board representation techniques, and modern enhancements for efficient move generation and evaluation.
 
