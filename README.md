@@ -15,9 +15,9 @@ Karl's Sun is a multi-threaded Python-based chess engine designed for playing ch
 * **Syzygy Endgame Tablebases**: The engine incorporates Syzygy endgame tablebases for positions with up to 4 pieces, enabling precise endgame play.
 
 ### Efficiencies:
+* **Multi-Threading**: The engine uses the parallel search approach lazy SMP for parallel processing, accelerating the search process and resulting in better engine moves.
 * **Iterative Deepening with MTD(f)**: Karl's Sun employs the MTD(f) (Memory-enhanced Test Driver with a fixed-depth window) search algorithm in conjunction with iterative deepening. This approach amalgamates the advantages of binary search and memory enhancements to efficiently identify the optimal move.
 * **Transposition Table**: Karl's Sun uses a transposition table to store and retrieve previously computed positions, optimizing search performance.
-* **Multi-Threading**: The engine uses the parallel search approach lazy SMP for parallel processing, accelerating the search process and resulting in better engine moves.
 * **Bitwise Operations**: While the boardstate is stored as a one dimentional array, bitwise operations are used to traverse the board when possible, improving efficiency when generating legal moves.
 * **Zobrist Hashing**: Transforms the board position of arbitrary size into a 64 bit integer for efficient storage and faster lookups
 
