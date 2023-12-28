@@ -9,27 +9,27 @@ Karl Chess is a multi-threaded Python-based chess engine designed for playing ch
 
 ### Evaluation:
 * **Opening Book**: Karl Chess utilizes the komodo.bin opening book, an opening book used by the Komodo chess engine, created by the opening book expert Erdogan Gunes
-* **PeSTO Board Evaluation**: This is a Piece-Square Tables Only (PeSTO) evaluation function used in chess engines. It was developed by Ronald Friederich for his chess engine RofChade and further used in his experimental chess engine PeSTO[^1^][1]. The PeSTO evaluation function performs a tapered evaluation to interpolate between piece-square tables values for the opening and endgame, optimized by Texel's tuning method[^1^][1]. It's intended to replace Tomasz Michniewski's Simplified Evaluation Function and has been successfully applied in several engines[^1^][1]. The PeSTO evaluation function is known for its efficiency and effectiveness in evaluating board positions in chess[^1^][1].
-* **Negamax Framework**: This is a decision-making algorithm used in game theory and artificial intelligence for two-player zero-sum games. The principle of Negamax is that the value of a position for one player is the negation of the value for the other player, based on the zero-sum property. The Negamax algorithm simplifies the implementation of the minimax algorithm by using a single procedure to evaluate positions for both players, which is a significant advantage over the minimax algorithm.
-* **Iterative Deepening with MTD(f)**: Karl Chess employs the MTD(f) (Memory-enhanced Test Driver with a fixed-depth window) search algorithm in conjunction with iterative deepening. This approach amalgamates the advantages of binary search and memory enhancements to efficiently identify the optimal move.
+* **PeSTO Board Evaluation**: A Piece-Square Tables Only (PeSTO) evaluation function, developed by Ronald Friederich for his chess engine RofChade, that performs a tapered evaluation to interpolate between piece-square tables values for the opening and endgame.
+* **Negamax Framework**: A decision-making algorithm used in game theory and artificial intelligence for two-player zero-sum games that finds the best move by recursifely exploring the game tree with minimax principles.
+* **Quiescence Search**: Explores tactical sequences such as captures and promotions to completion until the board state is quiet to limit the horizon effect.
 * **Syzygy Endgame Tablebases**: The engine incorporates Syzygy endgame tablebases for positions with up to 4 pieces, enabling precise endgame play.
+
+### Efficiencies:
+* **Iterative Deepening with MTD(f)**: Karl Chess employs the MTD(f) (Memory-enhanced Test Driver with a fixed-depth window) search algorithm in conjunction with iterative deepening. This approach amalgamates the advantages of binary search and memory enhancements to efficiently identify the optimal move.
+* **Transposition Table**: Karl Chess uses a transposition table to store and retrieve previously computed positions, optimizing search performance.
+* **Multi-Threading**: The engine uses the parallel search approach lazy SMP for parallel processing, accelerating the search process and resulting in better engine moves.
+* **Bitwise Operations**: While the boardstate is stored as a one dimentional array, bitwise operations are used to traverse the board when possible, improving efficiency when generating legal moves.
+
+### Move Ordering:
+* **MVV_LVA(Most Valuable Victim - Least Valuable Attacker)**: Karl Chess employes the MVV_LVA heuristic to prioritize capturing moves based on the value of the victim and attacker pieces, enhancing move ordering of captures.
+* **Killer Heuristic**: The engine prioritizes moves that were successful in previous iterations at the same depth, improving chances of obtaining cutoffs early, enhancing search efficiency.
+* **Relative History Heuristic**: Karl Chess utilizes a relative history heuristic to prioritize moves that have historically led to cutoffs in relation to the move's frequency during the search.
+* **Countermove Heuristic**: The engine increases the value of moves that caused a cutoff in response to a specific move by the opponent, ordering it earlier
 
 
 ### Pruning:
 
 
-
-
-
-
-
-* Transposition Table: Karl Chess uses a transposition table to store and retrieve previously computed positions, optimizing search performance.
-
-* Move Ordering: Efficient move ordering techniques, including killer moves and history heuristics, contribute to a more focused search and improved gameplay.
-
-* Material and Positional Evaluation: The evaluation function combines material balance and positional considerations to assess the strength of positions and guide move selection.
-
-* Multi-Threading: The engine uses the parallel search approach lazy SMP for parallel processing, accelerating the search process and resulting in better engine moves.
 
 Getting Started:
 
