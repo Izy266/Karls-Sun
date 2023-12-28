@@ -10,15 +10,15 @@ Features:
 
 * Pesto Opening Book: KarlPy benefits from the Pesto opening book, enhancing its opening repertoire and strategic choices.
 
-    Iterative Deepening: The engine employs iterative deepening to gradually explore the game tree, balancing search depth and computational efficiency.
+* Iterative Deepening: The engine employs iterative deepening to gradually explore the game tree, balancing search depth and computational efficiency.
 
-    Transposition Table: KarlPy uses a transposition table to store and retrieve previously computed positions, optimizing search performance.
+* Transposition Table: KarlPy uses a transposition table to store and retrieve previously computed positions, optimizing search performance.
 
-    Move Ordering: Efficient move ordering techniques, including killer moves and history heuristics, contribute to a more focused search and improved gameplay.
+* Move Ordering: Efficient move ordering techniques, including killer moves and history heuristics, contribute to a more focused search and improved gameplay.
 
-    Material and Positional Evaluation: The evaluation function combines material balance and positional considerations to assess the strength of positions and guide move selection.
+* Material and Positional Evaluation: The evaluation function combines material balance and positional considerations to assess the strength of positions and guide move selection.
 
-    Multi-Threading: The engine leverages multi-threading for parallel processing, accelerating the search process and enhancing responsiveness.
+* Multi-Threading: The engine leverages multi-threading for parallel processing, accelerating the search process and enhancing responsiveness.
 
 Getting Started:
 
