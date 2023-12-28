@@ -1,24 +1,26 @@
-# Karl Chess Engine (~ 2500 Elo)
+# Karl Chess (~ 2500 Elo)
 
 Karl Chess is a multi-threaded Python-based chess engine designed for playing chess games, analyzing positions, and providing a challenging opponent for players. The engine utilizes a combination of classic chess algorithms, board representation techniques, and modern enhancements for efficient move generation and evaluation.
 
-Features:
+## Features:
+
+### Pruning:
 
 * UCI Protocol Support: KarlPy follows the Universal Chess Interface (UCI) protocol, allowing seamless integration with various chess interfaces and applications.
 
-* Syzygy Endgame Tablebases: The engine incorporates Syzygy endgame tablebases for positions with up to 5 pieces, enabling precise endgame play.
+* Syzygy Endgame Tablebases: The engine incorporates Syzygy endgame tablebases for positions with up to 4 pieces, enabling precise endgame play.
 
-* Pesto Opening Book: KarlPy benefits from the Pesto opening book, enhancing its opening repertoire and strategic choices.
+* PeSTO Board Evaluation: Karl Chess benefits from the PeSTO piece-square tables, enhancing its positional understanding and strategic choices.
 
 * Iterative Deepening: The engine employs iterative deepening to gradually explore the game tree, balancing search depth and computational efficiency.
 
-* Transposition Table: KarlPy uses a transposition table to store and retrieve previously computed positions, optimizing search performance.
+* Transposition Table: Karl Chess uses a transposition table to store and retrieve previously computed positions, optimizing search performance.
 
 * Move Ordering: Efficient move ordering techniques, including killer moves and history heuristics, contribute to a more focused search and improved gameplay.
 
 * Material and Positional Evaluation: The evaluation function combines material balance and positional considerations to assess the strength of positions and guide move selection.
 
-* Multi-Threading: The engine leverages multi-threading for parallel processing, accelerating the search process and enhancing responsiveness.
+* Multi-Threading: The engine uses the parallel search approach lazy SMP for parallel processing, accelerating the search process and resulting in better engine moves.
 
 Getting Started:
 
