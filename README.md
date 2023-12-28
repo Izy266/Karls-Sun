@@ -7,14 +7,21 @@ Karl Chess is a multi-threaded Python-based chess engine designed for playing ch
 ### General:
 * UCI Protocol Support: KarlPy follows the Universal Chess Interface (UCI) protocol, allowing seamless integration with various chess interfaces and applications.
 
+### Evaluation:
+* **Opening Book**: Karl Chess utilizes the komodo.bin opening book, an opening book used by the Komodo chess engine, created by the opening book expert Erdogan Gunes
+* **PeSTO Board Evaluation**: Karl Chess benefits from the PeSTO piece-square tables, enhancing its positional understanding and strategic choices.
+* **Negamax Framework**: This is a decision-making algorithm used in game theory and artificial intelligence for two-player zero-sum games. The principle of Negamax is that the value of a position for one player is the negation of the value for the other player, based on the zero-sum property. The Negamax algorithm simplifies the implementation of the minimax algorithm by using a single procedure to evaluate positions for both players, which is a significant advantage over the minimax algorithm.
+* **Iterative Deepening with MTD(f)**: Karl Chess employs the MTD(f) (Memory-enhanced Test Driver with a fixed-depth window) search algorithm in conjunction with iterative deepening. This approach amalgamates the advantages of binary search and memory enhancements to efficiently identify the optimal move.
+* **Syzygy Endgame Tablebases**: The engine incorporates Syzygy endgame tablebases for positions with up to 4 pieces, enabling precise endgame play.
+
+
 ### Pruning:
 
 
-* Syzygy Endgame Tablebases: The engine incorporates Syzygy endgame tablebases for positions with up to 4 pieces, enabling precise endgame play.
 
-* PeSTO Board Evaluation: Karl Chess benefits from the PeSTO piece-square tables, enhancing its positional understanding and strategic choices.
 
-* Iterative Deepening: The engine employs iterative deepening to gradually explore the game tree, balancing search depth and computational efficiency.
+
+
 
 * Transposition Table: Karl Chess uses a transposition table to store and retrieve previously computed positions, optimizing search performance.
 
