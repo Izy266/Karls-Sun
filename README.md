@@ -40,12 +40,3 @@ Getting Started:
 Install dependencies:
 
     pip install -r requirements.txt
-
-Contributions:
-
-Contributions, bug reports, and feature requests are welcome! Feel free to submit pull requests or open issues to help improve Karl's Sun.
-License:
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-Adjust the content as needed, and include relevant links to your repository, license file, and any additional documentation or resources.
