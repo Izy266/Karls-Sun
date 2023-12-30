@@ -638,7 +638,8 @@ def get_move(args):
     gs, max_depth = args
     choices = [-1, 0, -1, -1, -1, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, 0, -1, -1, 0, -1, 0, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0, -1, -1, -1, 0, -1, 0]
     choices2 = [0, -1, -1, -1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, -1, 0, -1, 0, -1, -1, 0, 0, 0, -1, -1, -1, 0, -1, 0, 0, -1, 0, 0, -1, -1, 0, 0, 0, 0, 0, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0]
-    with open("t.dat", "r+b") as f:
+    tt_path = os.path.join(current_dir, "t.dat")
+    with open(tt_path, "r+b") as f:
         fd = f.fileno()
         trans_table = mmap.mmap(fd, 0, access=mmap.ACCESS_WRITE)
 
