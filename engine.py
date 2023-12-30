@@ -1,9 +1,5 @@
 from collections import defaultdict
-import time
-import mmap
-import chess
-import chess.syzygy
-import chess.polyglot
+import os, time, mmap, chess, chess.syzygy, chess.polyglot
 from pesto import *
 from board import *
 from tt import *
@@ -17,7 +13,10 @@ counter_move_table = defaultdict(list)
 killer_table = defaultdict(list)
 guess = (0,None)
 pvals = [88, 309, 331, 495, 981, 10000, 0]
-egtb = chess.syzygy.open_tablebase("D:\\Users\\Islam\\Documents\\CS\\karlpy\\syzygy 3-4") # endgame tablebase <= 5 pieces
+fmargins = [200, 300, 500, 1000]
+current_dir = os.path.dirname(os.path.abspath(__file__))
+syzygy_path = os.path.join(current_dir, "syzygy 3-4")
+egtb = chess.syzygy.open_tablebase(syzygy_path) # endgame tablebase <= 4 pieces
 
 def hash(gs):
     h = 0
@@ -82,8 +81,8 @@ def order_moves(gs, moves, depth = None):
             promo_moves.append((start, end))
         elif gs.board[end] != 12:
             capture_moves.append((start, end))
-        elif move_is_check(gs, (start, end)):
-            check_moves.append((start, end))
+        # elif move_is_check(gs, (start, end)):
+        #     check_moves.append((start, end))
         else:
             quiet_moves.append((start, end))
 
@@ -291,13 +290,21 @@ def quiesce(gs, alpha, beta, trans_table, depth = 0):
         for move in get_noisy_moves(gs):
             start = move[0]
             end = move[1] if not gs.promo_move(start) else gs.parse_promo(start, move[1])[0]
-            if gs.board[end] == 12 or see_capture(gs, start, end, gs.cur_player) >= 0:
-                gs.move(move)
-                score = -quiesce(gs, -beta, -alpha, trans_table, depth - 1)
-                gs.undo()
-                alpha = max(alpha, score)
-                if alpha >= beta:
-                    break
+            piece_end = gs.board[end]
+
+            if (
+                piece_end != 12 and 
+                (stand_pat + pvals[piece_end >> 1] + fmargins[0] <= alpha or
+                see_capture(gs, start, end, gs.cur_player) < 0)
+            ):
+                continue
+
+            gs.move(move)
+            score = -quiesce(gs, -beta, -alpha, trans_table, depth - 1)
+            gs.undo()
+            alpha = max(alpha, score)
+            if alpha >= beta:
+                break
 
         if trans_table[-1] == 0:
             tt_flag = (
@@ -317,7 +324,7 @@ def quiesce(gs, alpha, beta, trans_table, depth = 0):
 
     return alpha
 
-def negamax_root(gs, depth, alpha, beta, trans_table, moves = None):    
+def negamax_root(gs, depth, alpha, beta, trans_table, moves = None, allow_null = True):    
     best_score = -INFINITY
     best_move = (0, 0)
 
@@ -353,23 +360,25 @@ def negamax_root(gs, depth, alpha, beta, trans_table, moves = None):
         random.shuffle(valid_moves)
         valid_moves, noisy_moves_len = order_moves(gs, valid_moves, depth)  
 
-        fmargins = [0, 300, 500]
+        fmargin = fmargins[depth] if depth < 4 else 300*depth
 
-        for m in range(len(valid_moves)):
+        for m, move in enumerate(valid_moves):
             if trans_table[-1] != 0:
                 break
-
+            
             move = valid_moves[m]
             start_square = move[0]
-            end_square = move[1] if not gs.promo_move(start_square) else gs.parse_promo(start_square, move[1])[0]
-            start_piece, end_piece = gs.board[start_square], gs.board[end_square]
+            promo_move = gs.promo_move(start_square)
+            end_square = move[1] if not promo_move else gs.parse_promo(start_square, move[1])[0]
+            end_piece = gs.board[end_square]
 
             gs.move(move)
+            quiet_move = m >= noisy_moves_len
             
             # extended futility pruning
             if (
                 depth < 3
-                and m >= noisy_moves_len
+                and quiet_move
                 and not gs.check
                 and abs(alpha) < CHECKMATE
                 and abs(beta) < CHECKMATE
@@ -379,11 +388,11 @@ def negamax_root(gs, depth, alpha, beta, trans_table, moves = None):
                 if score > alpha:
                     score = -negamax(gs, depth - 1, -beta, -alpha, trans_table)
             
-            # late move reduction
+            # late move reduction and razoring
             elif (
                 depth >= 3
-                and m >= noisy_moves_len + 3
                 and not gs.check
+                and (m >= noisy_moves_len + 3 or (quiet_move and depth == 3 and -material_balance(gs) + fmargins[3] <= alpha))
             ):
                 r = max(2, depth//3) if m > noisy_moves_len + 10 else 1
                 score = -negamax(gs, depth - r - 1, -beta, -alpha, trans_table)
@@ -474,8 +483,7 @@ def negamax(gs, depth, alpha, beta, trans_table, allow_null=True):
         if depth <= 0:
             return quiesce(gs, alpha, beta, trans_table)
         
-        fmargins = [0, 300, 500, 1000]
-        fmargin = fmargins[depth] if depth < 4 else 280*depth
+        fmargin = fmargins[depth] if depth < 4 else 300*depth
 
         # reverse futility pruning
         if (
@@ -512,31 +520,34 @@ def negamax(gs, depth, alpha, beta, trans_table, allow_null=True):
         noisy_moves_len = valid_moves[1]
         valid_moves = valid_moves[0]
 
-        for m in range(len(valid_moves)):
+        for m, move in enumerate(valid_moves):
             if trans_table[-1] != 0:
                 break
             
             move = valid_moves[m]
             start_square = move[0]
-            end_square = move[1] if not gs.promo_move(start_square) else gs.parse_promo(start_square, move[1])[0]
-            start_piece, end_piece = gs.board[start_square], gs.board[end_square]
+            promo_move = gs.promo_move(start_square)
+            end_square = move[1] if not promo_move else gs.parse_promo(start_square, move[1])[0]
+            end_piece = gs.board[end_square]
 
-            ext = True if (
+            ext = (
                 threat or                                                    # mate threat extension
                 len(valid_moves) == 1 or                                     # one reply extension
                 gs.check or                                                  # check extension
-                (start_piece//2 == 0 and end_square in (0, 7))               # promotion extension
+                promo_move                                                   # promotion extension
                 # add recapture extension
-            ) else False
+            )
 
             gs.move(move)
             
             ext = False if gs.check else ext
+            quiet_move = m >= noisy_moves_len
 
             # extended futility pruning
             if (
                 depth < 3
-                and m >= noisy_moves_len
+                and quiet_move
+                and not ext
                 and not gs.check
                 and abs(alpha) < CHECKMATE
                 and abs(beta) < CHECKMATE
@@ -544,14 +555,14 @@ def negamax(gs, depth, alpha, beta, trans_table, allow_null=True):
             ):
                 score = -material_balance(gs) + fmargin
                 if score > alpha:
-                    score = -negamax(gs, depth - 1 + ext, -beta, -alpha, trans_table)
+                    score = -negamax(gs, depth - 1, -beta, -alpha, trans_table)
 
-            # late move reduction
+            # late move reduction and razoring
             elif (
                 depth >= 3
-                and m >= noisy_moves_len + 3
-                and not gs.check
                 and not ext
+                and not gs.check
+                and (m >= noisy_moves_len + 3 or (quiet_move and depth == 3 and -material_balance(gs) + fmargin <= alpha))
             ):
                 r = max(2, depth//3) if m > noisy_moves_len + 10 else 1
                 score = -negamax(gs, depth - r - 1, -beta, -alpha, trans_table)
@@ -634,8 +645,9 @@ def get_move(args):
     nodes = 0
     cur_depth = 1
     fen = gs.all_board_positions[-1]
+    book_path = os.path.join(current_dir, "komodo.bin")
 
-    with chess.polyglot.open_reader("D:\\Users\\Islam\\Documents\\CS\\karlpy\\komodo.bin") as reader:
+    with chess.polyglot.open_reader(book_path) as reader:
         board = chess.Board(fen)
         moves = []
         for entry in reader.find_all(board):
