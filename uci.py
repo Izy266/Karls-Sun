@@ -10,11 +10,11 @@ def parse_command(command):
     move_pattern = re.compile(r'^move\s+(\d+)\s+(\d+)$')
     stop_pattern = re.compile(r'^stop$')
     ucinewgame_pattern = re.compile(r'^ucinewgame$')
-    
+
     if uci_pattern.match(command):
-        return 'uci'
+        return 'uci', None
     elif isready_pattern.match(command):
-        return 'isready'
+        return 'isready', None
     elif position_match := position_pattern.match(command):
         fen = position_match.group(2) if position_match.group(2) else 'startpos'
         moves = position_match.group(4)
@@ -27,11 +27,11 @@ def parse_command(command):
         move_to = int(move_match.group(2))
         return 'move', move_from, move_to
     elif stop_pattern.match(command):
-        return 'stop'
+        return 'stop', None
     elif ucinewgame_pattern.match(command):
-        return 'ucinewgame'
+        return 'ucinewgame', None
     else:
-        return 'unknown'
+        return command
 
 def handle_go(params, ready):
     ready = False
@@ -90,7 +90,9 @@ def handle_move(move_from, move_to, ready):
     ready = True
 
 def handle_stop(ready):
+    ready = False
     trans_table[-1] = 1
+    ready = True
 
 def handle_ucinewgame(ready):
     game.build_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -")
@@ -116,10 +118,12 @@ if __name__ == '__main__':
         parsed_command = parse_command(command)
         command_type = parsed_command[0]
 
+        print(f"command_type: {command_type}")
+
         if command_type == 'uci':
-            handle_uci(command, ready)
+            handle_uci(ready)
         elif command_type == 'isready':
-            handle_isready(command, ready)
+            handle_isready(ready)
         elif command_type == 'position':
             fen, moves = parsed_command[1], parsed_command[2]
             handle_position(fen, moves, ready)
@@ -130,9 +134,9 @@ if __name__ == '__main__':
             move_from, move_to = parsed_command[1], parsed_command[2]
             handle_move(move_from, move_to, ready)
         elif command_type == 'stop':
-            handle_stop(command, ready)
+            handle_stop(ready)
         elif command_type == 'ucinewgame':
-            handle_ucinewgame(command, ready)
+            handle_ucinewgame(ready)
         elif command_type == 'quit':
             pool.close()
             pool.terminate()
