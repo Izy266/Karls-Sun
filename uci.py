@@ -33,7 +33,8 @@ def parse_command(command):
     else:
         return command
 
-def handle_go(params, ready):
+def handle_go(params):
+    global ready
     ready = False
     go = params.split()
     start_time = round(time.time()*1000)
@@ -61,18 +62,21 @@ def handle_go(params, ready):
         print(move)
     ready = True
 
-def handle_uci(ready):
+def handle_uci():
+    global ready
     ready = False
     print("id name karl\nid author Izy266\nuciok")
     ready = True
 
-def handle_isready(ready):
+def handle_isready():
+    global ready
     if ready:
         print("readyok")
     else:
         print("Engine not ready")
 
-def handle_position(fen, moves, ready):
+def handle_position(fen, moves):
+    global ready
     ready = False
     game.build_fen(fen)
 
@@ -84,26 +88,29 @@ def handle_position(fen, moves, ready):
             game.move(move)
     ready = True
 
-def handle_move(move_from, move_to, ready):
+def handle_move(move_from, move_to):
+    global ready
     ready = False
     game.move((move_from, move_to))
     ready = True
 
-def handle_stop(ready):
+def handle_stop():
+    global ready
     ready = False
     trans_table[-1] = 1
     ready = True
 
-def handle_ucinewgame(ready):
+def handle_ucinewgame():
+    global ready
     game.build_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -")
 
 if __name__ == '__main__':
-    ready = False
     game = GameState()
     cores = mp.cpu_count()//2 - 1
     pool = mp.Pool(processes=cores)
     tt_size = 520000000 # bytes
     tt_path = os.path.join(current_dir, "t.dat")
+    
     with open(tt_path, "wb") as f:
         f.truncate(tt_size)
     
@@ -121,22 +128,22 @@ if __name__ == '__main__':
         print(f"command_type: {command_type}")
 
         if command_type == 'uci':
-            handle_uci(ready)
+            handle_uci()
         elif command_type == 'isready':
-            handle_isready(ready)
+            handle_isready()
         elif command_type == 'position':
             fen, moves = parsed_command[1], parsed_command[2]
             handle_position(fen, moves, ready)
         elif command_type == 'go':
             params = parsed_command[1]
-            handle_go(params, ready)
+            handle_go(params)
         elif command_type == 'move':
             move_from, move_to = parsed_command[1], parsed_command[2]
-            handle_move(move_from, move_to, ready)
+            handle_move(move_from, move_to)
         elif command_type == 'stop':
-            handle_stop(ready)
+            handle_stop()
         elif command_type == 'ucinewgame':
-            handle_ucinewgame(ready)
+            handle_ucinewgame()
         elif command_type == 'quit':
             pool.close()
             pool.terminate()
