@@ -1,7 +1,7 @@
 import subprocess
 
 engine_process = subprocess.Popen(
-    "pypy D:/Users/Islam/Documents/CS/karlpy/uci.py",
+    "{pypy or python} {uci.py PATH}",
     stdin=subprocess.PIPE,
     stdout=subprocess.PIPE,
     text=True,
