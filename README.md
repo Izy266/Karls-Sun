@@ -49,6 +49,6 @@ Install dependencies:
 
 For UCI support:
 1. Open the `karls_sun.py` file.
-2. Locate line 4 and replace the existing code between the quotations with the following: `pypy` or `python` followed by the full path to `uci.py`.
+2. Locate line 4 and replace the existing code between the quotations with the following: `pypy` or `python` followed by the absolute path to `uci.py`.
 3. Convert `karls_sun.py` to an executable using `pyinstaller` or any other py to exe converter.
 4. Add the newly created executable to any GUI that supports the UCI protocol, such as Lucas or Arena.
