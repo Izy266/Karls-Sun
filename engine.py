@@ -245,7 +245,7 @@ def see_capture(gs, start, end, side):
     return value
 
 def quiesce(gs, alpha, beta, trans_table, depth = 0):
-    if round(time.time()*1000) - get_time(trans_table, "start") > get_time(trans_table, "max"):
+    if round(time.time()*1000) - get_time(trans_table, "start") > get_time(trans_table, "max") * 0.99:
         trans_table[-1] = 1
 
     if trans_table[-1] == 0:
@@ -328,9 +328,6 @@ def negamax_root(gs, depth, alpha, beta, trans_table, moves = None, allow_null =
     best_score = -INFINITY
     best_move = (0, 0)
 
-    if round(time.time()*1000) - get_time(trans_table, "start") > get_time(trans_table, "max"):
-        trans_table[-1] = 1
-
     if trans_table[-1] == 0:
         node_count(trans_table, "add")
         alpha_og = alpha
@@ -360,8 +357,6 @@ def negamax_root(gs, depth, alpha, beta, trans_table, moves = None, allow_null =
         random.shuffle(valid_moves)
         valid_moves, noisy_moves_len = order_moves(gs, valid_moves, depth)  
 
-        fmargin = fmargins[depth] if depth < 4 else 300*depth
-
         for m, move in enumerate(valid_moves):
             if trans_table[-1] != 0:
                 break
@@ -384,12 +379,12 @@ def negamax_root(gs, depth, alpha, beta, trans_table, moves = None, allow_null =
                 and abs(beta) < CHECKMATE
                 and material_left(gs, gs.cur_player) > 3
             ):
-                score = -material_balance(gs) + fmargins[depth]
-                if score > alpha:
-                    score = -negamax(gs, depth - 1, -beta, -alpha, trans_table)
+                if -material_balance(gs) + fmargins[depth] <= alpha:
+                    gs.undo()
+                    continue
             
             # late move reduction and razoring
-            elif (
+            if (
                 depth >= 3
                 and not gs.check
                 and (m >= noisy_moves_len + 3 or (quiet_move and depth == 3 and -material_balance(gs) + fmargins[3] <= alpha))
@@ -450,7 +445,7 @@ def negamax(gs, depth, alpha, beta, trans_table, allow_null=True):
     best_score = -INFINITY
     best_move = (0, 0)
 
-    if round(time.time()*1000) - get_time(trans_table, "start") > get_time(trans_table, "max"):
+    if round(time.time()*1000) - get_time(trans_table, "start") > get_time(trans_table, "max") * 0.99:
         trans_table[-1] = 1
 
     if trans_table[-1] == 0:
@@ -553,12 +548,12 @@ def negamax(gs, depth, alpha, beta, trans_table, allow_null=True):
                 and abs(beta) < CHECKMATE
                 and material_left(gs, gs.cur_player) > 3
             ):
-                score = -material_balance(gs) + fmargin
-                if score > alpha:
-                    score = -negamax(gs, depth - 1, -beta, -alpha, trans_table)
+                if -material_balance(gs) + fmargin <= alpha:
+                    gs.undo()
+                    continue
 
             # late move reduction and razoring
-            elif (
+            if (
                 depth >= 3
                 and not ext
                 and not gs.check
@@ -636,8 +631,6 @@ def get_move(args):
     global guess
     global nodes
     gs, max_depth = args
-    choices = [-1, 0, -1, -1, -1, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, 0, -1, -1, 0, -1, 0, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0, -1, -1, -1, 0, -1, 0]
-    choices2 = [0, -1, -1, -1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, -1, 0, -1, 0, -1, -1, 0, 0, 0, -1, -1, -1, 0, -1, 0, 0, -1, 0, 0, -1, -1, 0, 0, 0, 0, 0, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0]
     tt_path = os.path.join(current_dir, "t.dat")
     with open(tt_path, "r+b") as f:
         fd = f.fileno()
@@ -657,7 +650,6 @@ def get_move(args):
             moves.append(parsed)
         if moves:
             set_best(trans_table, 0, moves[0], 1)
-            # set_best(trans_table, 0, moves[choices[len(gs.all_board_positions)]], 0)
             trans_table[-1] = 1
             return 1
 
