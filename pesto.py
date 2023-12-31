@@ -7,7 +7,7 @@ def pesto(gs):
         return sq ^ 56
 
     def enemy(side):
-        return 0 if side == 1 else 1
+        return side ^ 1
     
     turn = gs.cur_player
     board = gs.board
