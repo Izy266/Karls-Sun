@@ -111,12 +111,9 @@ if __name__ == '__main__':
         trans_table = mmap.mmap(fd, 0, access=mmap.ACCESS_WRITE)
 
     while True:
-        command = input().strip()
-        print(f"COMMAND RECEIVED: {command}")
+        command = input()
         parsed_command = parse_command(command)
         command_type = parsed_command[0]
-
-        print(f"command_type: {command_type}")
 
         if command_type == 'uci':
             print("id name Karl's Sun\nid author Izy266\nuciok")
@@ -140,8 +137,5 @@ if __name__ == '__main__':
             pool.terminate()
             os.remove(tt_path)
             break
-        else:
-            print(f"Unknown command: {command}")
             
-        if command_type in ['uci', 'position', 'go', 'move', 'stop', 'ucinewgame', 'quit']:
-            game.print_board()
+        print("Done")
