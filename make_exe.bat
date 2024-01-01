@@ -1,2 +1,3 @@
 @echo off
-pyinstaller --onefile karls_sun.py
+python -m pip install pyinstaller
+pyinstaller --onefile --clean karls_sun.py
