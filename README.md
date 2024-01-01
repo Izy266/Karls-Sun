@@ -48,7 +48,8 @@ Install dependencies:
 
 To utilize GUIs with UCI support:
 1. Replace line 4 on `karls_sun.py` with path to PyPy or Python followed by the path to `uci.py`
-2. Install `pyinstaller` using `python -m pip install pyinstaller`
-3. Convert `karls_sun.py` to an exe with `pyinstaller karls_sun.py`
-4. The resulting `karls_sun.exe` will then be found in `dist` folder
-5. add `karls_sun.exe` as the engine to any UCI supported GUI
+2. Run `make_exe.bat` and skip to step 5 or continue with step 3
+3. Install `pyinstaller` using `python -m pip install pyinstaller`
+4. Convert `karls_sun.py` to an exe with `pyinstaller karls_sun.py`
+5. The resulting `karls_sun.exe` will then be found in `dist` folder
+6. add `karls_sun.exe` as the engine to any UCI supported GUI
