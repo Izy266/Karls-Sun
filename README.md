@@ -41,15 +41,14 @@ Karl's Sun is a multi-threaded Python-based chess engine designed for playing ch
 * **One Reply Extension**: If there is only one legal move in a position, the search tree is extended, as it would not result in a massive tree extension while allowing the engine to gain a more accurate assessment of the resulting position.
   
 Getting Started:
+**Install the PyPy interpreter for better performance**
 
 Install dependencies:
 
-    pip install -r requirements.txt
+    pypy -m pip install -r requirements.txt
 
-To utilize GUIs with UCI support:
-1. Replace line 4 on `karls_sun.py` with path to PyPy or Python followed by the path to `uci.py`
-2. Run `make_exe.bat` and skip to step 5 or continue with step 3
-3. Install `pyinstaller` using `python -m pip install pyinstaller`
-4. Convert `karls_sun.py` to an exe with `pyinstaller karls_sun.py`
-5. The resulting `karls_sun.exe` will then be found in `dist` folder
-6. add `karls_sun.exe` as the engine to any UCI supported GUI
+Using GUIs with UCI support:
+1. Ensure `pypy` or `python` is in your PATH
+2. Run `make_exe.bat` which installs `pyinstaller` and converts `karls_sun.py` to an exe
+5. The resulting `karls_sun.exe` will then be found in a newly created `dist` folder
+6. Add `karls_sun.exe` as the engine to any UCI supported GUI
