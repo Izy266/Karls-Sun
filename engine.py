@@ -631,6 +631,8 @@ def get_move(args):
     global guess
     global nodes
     gs, max_depth = args
+    choices = [-1, 0, -1, -1, -1, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, 0, -1, -1, 0, -1, 0, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0, -1, -1, -1, 0, -1, 0]
+    choices2 = [0, -1, -1, -1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, -1, 0, -1, 0, -1, -1, 0, 0, 0, -1, -1, -1, 0, -1, 0, 0, -1, 0, 0, -1, -1, 0, 0, 0, 0, 0, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0]
     tt_path = os.path.join(current_dir, "t.dat")
     with open(tt_path, "r+b") as f:
         fd = f.fileno()
@@ -650,6 +652,7 @@ def get_move(args):
             moves.append(parsed)
         if moves:
             set_best(trans_table, 0, moves[0], 1)
+            # set_best(trans_table, 0, moves[choices[len(gs.all_board_positions)]], 0)
             trans_table[-1] = 1
             return 1
 
