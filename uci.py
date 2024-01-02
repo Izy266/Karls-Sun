@@ -10,6 +10,7 @@ def parse_command(command):
     move_pattern = re.compile(r'^move\s+(\w\d)\s+(\w\d)(\s*([qrbn]))?$')
     stop_pattern = re.compile(r'^stop$')
     ucinewgame_pattern = re.compile(r'^ucinewgame$')
+    quit_pattern = re.compile(r'^quit$')
 
     if uci_pattern.match(command):
         return 'uci', None
@@ -31,6 +32,8 @@ def parse_command(command):
         return 'stop', None
     elif ucinewgame_pattern.match(command):
         return 'ucinewgame', None
+    elif quit_pattern.match(command):
+        return 'quit', None
     else:
         return "N/A"
     
@@ -69,8 +72,12 @@ def handle_go(params):
     
     set_time(trans_table, max_time, "max")
     args = [(game, max_depth) for _ in range(cores)]
+    search_time_start = time.time()
     pool.map(get_move, args)
+    search_time = time.time() - search_time_start
+    nodes_searched = node_count(trans_table, 'get')
     score, move, depth = get_best(trans_table) if get_best(trans_table)[-1] < depth_reach(trans_table, "get") else get_best(trans_table, -2)
+    print(f"info depth {depth} score cp {score} time {round(search_time*1000)} nodes {nodes_searched} nps {round(nodes_searched/search_time)}")
     print(f"bestmove {parse_engine_move(move)}")
     
 def handle_position(fen, moves):
@@ -89,12 +96,6 @@ def handle_move(move_from, move_to, promo_piece):
     move_to, move_from = game.parse_loc(move_to), game.parse_loc(move_from)
     move_to += promo_offs[promo_piece]
     game.move((move_from, move_to))
-
-def handle_stop():
-    trans_table[-1] = 1
-
-def handle_ucinewgame():
-    game.build_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -")
 
 if __name__ == '__main__':
     game = GameState()
@@ -129,12 +130,13 @@ if __name__ == '__main__':
             move_from, move_to, promo_piece = parsed_command[1], parsed_command[2], parsed_command[3]
             handle_move(move_from, move_to, promo_piece)
         elif command_type == 'stop':
-            handle_stop()
+            trans_table[-1] = 1
         elif command_type == 'ucinewgame':
-            handle_ucinewgame()
+            game.build_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
         elif command_type == 'quit':
             pool.close()
             pool.terminate()
+            trans_table.close()
             os.remove(tt_path)
             break
             
