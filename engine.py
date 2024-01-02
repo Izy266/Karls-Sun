@@ -652,7 +652,6 @@ def get_move(args):
             moves.append(parsed)
         if moves:
             set_best(trans_table, 0, moves[0], 1)
-            # set_best(trans_table, 0, moves[choices[len(gs.all_board_positions)]], 0)
             trans_table[-1] = 1
             return 1
 
@@ -688,7 +687,6 @@ def get_move(args):
     # iterative deepening
     while cur_depth <= max_depth and trans_table[-1] == 0:
         guess = (MTDF(gs, guess[0], cur_depth, trans_table), gs.cur_player)
-        # guess = (negamax_root(gs, cur_depth, -INFINITY, INFINITY, trans_table), gs.cur_player)
         if abs(guess[0]) > CHECKMATE:
             break
         cur_depth += 1
