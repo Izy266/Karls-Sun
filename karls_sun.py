@@ -1,11 +1,13 @@
-import subprocess
+import subprocess, os
+
+interpreter = "pypy" if "pypy" in os.environ["PATH"] else "python"
 
 engine_process = subprocess.Popen(
-    "pypy uci.py",
+    f"{interpreter} ../uci.py",
     stdin=subprocess.PIPE,
     stdout=subprocess.PIPE,
     text=True,
-    shell=True
+    shell=True,
 )
 
 while True:
@@ -17,4 +19,3 @@ while True:
     while response != "Done":
         print(response)
         response = engine_process.stdout.readline().strip()
-        
