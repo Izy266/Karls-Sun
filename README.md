@@ -41,6 +41,7 @@ Karl's Sun is a multi-threaded Python-based chess engine designed for playing ch
 * **One Reply Extension**: If there is only one legal move in a position, the search tree is extended, as it would not result in a massive tree extension while allowing the engine to gain a more accurate assessment of the resulting position.
   
 Getting Started:
+
 **Install the PyPy interpreter for better performance**
 
 Install dependencies:
