@@ -42,7 +42,7 @@ Karl's Sun is a multi-threaded Python-based chess engine designed for playing ch
   
 Getting Started:
 
-**Install the PyPy interpreter for better performance**
+**Install the PyPy interpreter and add it to your PATH for better performance**
 
 Install dependencies:
 
