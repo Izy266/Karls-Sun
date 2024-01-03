@@ -1,6 +1,6 @@
 # Karl's Sun
 ![karls sun logo 2](https://github.com/Izy266/Karls-Sun/assets/54121657/be459530-f7e5-4bf6-adcd-00ab63216af5)
-Karl's Sun is a multi-threaded Python-based chess engine designed for playing chess games, analyzing positions, and providing a challenging opponent for players. The engine utilizes a combination of classic chess algorithms, board representation techniques, and modern enhancements for efficient move generation and evaluation.
+Karl's Sun is a PyPy compatible multi-threaded Python-based chess engine designed for playing chess games, analyzing positions, and providing a challenging opponent for players. The engine utilizes a combination of classic chess algorithms, board representation techniques, and modern enhancements for efficient move generation and evaluation.
 
 ## Features:
 
