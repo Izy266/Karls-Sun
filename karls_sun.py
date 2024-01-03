@@ -6,8 +6,7 @@ engine_process = subprocess.Popen(
     f"{interpreter} ../uci.py",
     stdin=subprocess.PIPE,
     stdout=subprocess.PIPE,
-    text=True,
-    shell=True,
+    universal_newlines=True
 )
 
 while True:
@@ -16,6 +15,6 @@ while True:
     engine_process.stdin.flush()
 
     response = engine_process.stdout.readline().strip()
-    while response != "Done":
+    while response != "":
         print(response)
         response = engine_process.stdout.readline().strip()
