@@ -124,6 +124,7 @@ if __name__ == '__main__':
             fen, moves = parsed_command[1], parsed_command[2]
             handle_position(fen, moves)
         elif command_type == 'go':
+            trans_table[-1] = 0
             params = parsed_command[1]
             handle_go(params)
         elif command_type == 'move':
