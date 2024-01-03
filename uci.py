@@ -76,7 +76,13 @@ def handle_go(params):
     pool.map(get_move, args)
     search_time = time.time() - search_time_start
     nodes_searched = node_count(trans_table, 'get')
-    score, move, depth = get_best(trans_table) if get_best(trans_table)[-1] < depth_reach(trans_table, "get") else get_best(trans_table, -2)
+    score, move, depth = None, None, None
+    info = get_best(trans_table)
+    if not info:
+        tt_info = get_tt(trans_table, hash(game))
+        score, move, depth = tt_info[0], tt_info[3], tt_info[2]
+    else:
+        score, move, depth = get_best(trans_table) if get_best(trans_table)[-1] < depth_reach(trans_table, "get") else get_best(trans_table, -2)
     print(f"info depth {depth} score cp {score} time {round(search_time*1000)} nodes {nodes_searched} nps {round(nodes_searched/search_time)}")
     print(f"bestmove {parse_engine_move(move)}")
     
@@ -140,5 +146,5 @@ if __name__ == '__main__':
             trans_table.close()
             os.remove(tt_path)
             break
-            
+        
         print("")
